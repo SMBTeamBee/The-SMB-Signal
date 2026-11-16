@@ -1,0 +1,835 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The SMB Signal &middot; Edition 33</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column like a morning paper folded in half; navy Broadcast masthead, lead story, briefs, then the learning desk. Brand: SMB Team navy, Signal Green, Wave Blue. */
+:root{
+  --paper:#F0F5FA; --sheet:#FFFFFF; --ink:#003A59; --ink-soft:#3D6A84; --rule:#C4D6E0;
+  --sun:#2B7310; --sun-wash:#E9F7DF; --sky:#00739E;
+  --brand-navy:#003A59; --brand-green:#69CD2B; --brand-blue:#0091C9; --brand-sky:#9FD8F0;
+  --display:"Poppins",system-ui,sans-serif;
+  --body:"Poppins",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#021E2E; --sheet:#062B40; --ink:#E8F1F6; --ink-soft:#9FBBCB; --rule:#1C4660;
+  --sun:#69CD2B; --sun-wash:#10331F; --sky:#9FD8F0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#021E2E; --sheet:#062B40; --ink:#E8F1F6; --ink-soft:#9FBBCB; --rule:#1C4660;
+  --sun:#69CD2B; --sun-wash:#10331F; --sky:#9FD8F0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+a{color:var(--sky);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+.label{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:14px;background:var(--brand-navy);color:#FFFFFF;border-radius:18px;padding:22px 24px 20px}
+.mast .label{color:var(--brand-sky)}
+.mast-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.mast-brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.mast-mark{width:clamp(64px,16vw,96px);height:auto;flex:none}
+.mast-name{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mast-the{font-size:.85rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--brand-sky)}
+.mast h1{font-size:clamp(2.6rem,10vw,4.4rem);font-weight:800;letter-spacing:-.02em;line-height:.95;color:#FFFFFF}
+.mast-tag{font-size:.98rem;font-weight:500;color:var(--brand-green)}
+.mast .dek{color:#D6E6EF;font-size:.98rem}
+.mast a{color:var(--brand-sky)}
+.weather{font-family:var(--mono);font-size:.8rem;display:flex;flex-wrap:wrap;gap:6px 18px;color:#B9D2DF;border-top:1px solid rgba(255,255,255,.18);padding-top:12px}
+.weather b{color:#FFFFFF;font-weight:500}
+
+/* lead */
+.lead{display:flex;flex-direction:column;gap:14px}
+.lead h2{font-size:clamp(1.8rem,5.5vw,2.6rem);font-weight:800}
+.lead .body{display:flex;flex-direction:column;gap:12px;max-width:65ch}
+.angle{background:var(--sun-wash);border-left:4px solid var(--sun);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.angle .label{color:var(--sun)}
+.src{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
+
+/* briefs */
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--rule);padding-bottom:6px;margin-bottom:4px}
+.section-head h2{font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.briefs{display:flex;flex-direction:column}
+.brief{display:grid;grid-template-columns:1fr;gap:6px;padding-block:16px;border-bottom:1px solid var(--rule)}
+.brief:last-child{border-bottom:0}
+.brief h3{font-size:1.2rem;font-weight:700}
+.brief .why{font-size:.95rem;color:var(--ink-soft)}
+.brief .why b{color:var(--sun);font-family:var(--mono);font-weight:500;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+
+/* learning desk */
+.desk{display:grid;grid-template-columns:1fr;gap:20px}
+.panel{background:var(--sheet);border:1px solid var(--rule);padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel h3{font-size:1.5rem;font-weight:800}
+.term{font-family:var(--mono);font-size:.85rem;color:var(--sun)}
+.panel ul,.panel ol{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px}
+.action{border:2px solid var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start}
+.check input{margin-top:.35rem;accent-color:var(--sun);width:1.05rem;height:1.05rem;flex:none}
+.watch{display:flex;flex-direction:column;gap:14px}
+.watch-item{display:flex;flex-direction:column;gap:4px}
+.watch-item h4{margin:0;font-family:var(--display);font-size:1.05rem;font-weight:700}
+.pill{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;color:var(--ink-soft);margin-right:6px}
+.pill.test{border-color:var(--sky);color:var(--sky)}
+.pill.live{border-color:var(--sun);color:var(--sun)}
+code{font-family:var(--mono);font-size:.85em;overflow-wrap:anywhere}
+
+footer{border-top:3px solid var(--ink);padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:.85rem;color:var(--ink-soft)}
+footer ul{margin:0;padding-left:1.1rem;columns:2;column-gap:24px}
+@media (max-width:560px){footer ul{columns:1}}
+@media (prefers-reduced-motion:no-preference){.lead h2{animation:rise .5s ease-out both}@keyframes rise{from{transform:translateY(6px)}to{transform:none}}}
+.archive-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.archive-list li{display:flex;flex-direction:column;gap:2px;padding-block:10px;border-bottom:1px solid var(--rule)}
+.archive-list li:last-child{border-bottom:0}
+.archive-list a{font-family:var(--mono);font-size:.82rem}
+.archive-more{font-size:.9rem}
+.archive-empty{font-size:.95rem;color:var(--ink-soft);font-style:italic}
+.archive-list span{font-size:.95rem;color:var(--ink-soft)}
+.panel blockquote{margin:0;padding:8px 14px;border-left:3px solid var(--sky);font-style:italic;color:var(--ink)}
+.listing{display:grid;grid-template-columns:minmax(7rem,auto) 1fr;gap:6px 14px;margin:0;padding:14px;border:1px dashed var(--rule);background:var(--paper);font-size:.95rem}
+.listing dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);padding-top:.2rem}
+.listing dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:480px){.listing{grid-template-columns:1fr;gap:2px}.listing dd{margin-bottom:8px}}
+.reveal-btn{align-self:flex-start;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border:2px solid var(--ink);background:var(--sheet);color:var(--ink);cursor:pointer}
+.reveal-btn:hover{background:var(--sun-wash)}
+.reveal-btn:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.answer{display:flex;flex-direction:column;gap:8px;border-left:4px solid var(--sun);padding-left:14px}
+.answer .label{color:var(--sun)}
+.quiz{display:flex;flex-direction:column;gap:18px}
+.q{display:flex;flex-direction:column;gap:8px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.q-text{font-weight:600}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;font-family:var(--body);font-size:.95rem;line-height:1.4;padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--sky)}
+.opt:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.opt:disabled{cursor:default}
+.opt.is-correct{border-color:var(--sun);background:var(--sun-wash)}
+.opt.is-wrong{border-color:var(--sky);color:var(--ink-soft)}
+.opt .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.opt.is-correct .tag{color:var(--sun)}
+.fb{font-size:.92rem;color:var(--ink-soft)}
+.fb b{color:var(--ink)}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--ink)}
+.panel pre{margin:0;overflow-x:auto;padding:12px 14px;background:var(--paper);border:1px dashed var(--rule);font-size:.95rem;line-height:1.7}
+.archive-note{background:var(--sun-wash);border-left:4px solid var(--sun);padding:10px 14px;color:var(--ink)}
+</style>
+</head><body>
+<script type="application/json" id="brief-meta">
+{
+ "edition": 33,
+ "date": "2026-11-16",
+ "concepts_covered": [
+  "Scaled content abuse",
+  "Referral attribution and dark AI traffic (Intermediate)",
+  "Main content (Beginner)",
+  "Spam updates vs. core updates (Intermediate)",
+  "Crawl demand (Advanced)",
+  "Manual actions vs. algorithmic demotions (Beginner)",
+  "Fake independence and private blog networks (Intermediate)",
+  "Average position in Search Console (Beginner)",
+  "Query fan-out (Intermediate)",
+  "rel=\"canonical\" HTTP header for PDFs and other files (Advanced)",
+  "URL slugs (Beginner)",
+  "Entity disambiguation (Advanced)",
+  "Client-side vs. server-side rendering (Intermediate)",
+  "Flagging vs. appealing a Google review (Beginner)",
+  "Search crawlers vs. training crawlers (Intermediate)",
+  "How Google reacts to server errors (5xx) (Advanced)",
+  "Business Profile owners vs. managers (Beginner)",
+  "Seasonality vs. algorithmic drops (Intermediate)",
+  "Noindex vs. robots.txt disallow (Beginner)",
+  "Redirect hops and chains (Advanced)",
+  "Soft 404s (Intermediate)",
+  "Verifying real Googlebot (Advanced)",
+  "Grounding (Beginner)",
+  "Crawled vs. Discovered: currently not indexed (Intermediate)",
+  "Lab data vs. field data (Advanced)",
+  "HTTP status codes (Beginner)",
+  "Business Profile interactions (Intermediate)",
+  "Special hours (Beginner)",
+  "How Search Console counts AI Overview and AI Mode impressions, clicks and position (Intermediate)",
+  "Relative re-ranking in core updates (Advanced)",
+  "Crawl capacity limit (Intermediate)",
+  "Search Console clicks vs. GA4 sessions (Beginner)",
+  "Eligibility for AI features: indexed and snippet-eligible (Intermediate)"
+ ],
+ "tool_tips_covered": [
+  "Screaming Frog: Custom Search for NAP and old phone numbers",
+  "GA4: AI Assistant channel with source and landing page breakdown",
+  "Screaming Frog: Custom Extraction to audit blog author bylines",
+  "Google Search Console: Date Compare with Pages tab to find which pages moved",
+  "Screaming Frog: XML sitemap audit with Sitemaps tab filters (Non-Indexable URLs in Sitemap, Orphan URLs)",
+  "Ahrefs: Site Explorer chart notes to match traffic changes to Google updates (Intermediate)",
+  "BrightLocal: Local AI Visibility Sources to see which sites AI answers draw from (Beginner)",
+  "Bing Webmaster Tools: Import sites from Google Search Console, then use Search Performance as a second ranking check (Beginner)",
+  "Google Trends: Compare wordings by state with Composer box and Change filters to pick practice page terms (Beginner)",
+  "Screaming Frog: PDF audit with Store PDF, Extract PDF properties, Internal tab PDF filter, and PDF outlinks (Intermediate)",
+  "GA4: Annotations to mark tracking changes on report line graphs (Beginner)",
+  "Google Search Console: Branded and Non-branded query filter, with Difference sort for growth (Intermediate)",
+  "Screaming Frog: JavaScript rendering mode with JavaScript tab filters and Show Differences (Intermediate)",
+  "Redirect Path: pin it to see status codes and multi-hop redirects on old URLs (Beginner)",
+  "Google Trends: Related queries Rising vs. Top with Breakout for blog topic planning (Beginner)",
+  "Ahrefs: Site Audit 5XX page and 5xx page in sitemap, telling real outages from blocked crawls (Intermediate)",
+  "Google Business Profile performance report: Searches terms for practice page wording, plus bulk Insights download (Intermediate)",
+  "Google Trends: Quick comparisons chips (same period previous year, preceding period) to check seasonal dips (Beginner)",
+  "Detailed SEO Extension: Overview tab to check meta robots and X-Robots on thank-you and portal pages, Advanced tab site: search (Intermediate)",
+  "Screaming Frog: List mode homepage variants with Always Follow Redirects and Reports > Redirects > Redirect Chains (Intermediate)",
+  "Ahrefs: Site Explorer Broken backlinks report sorted by DR, plus Best by links with HTTP code 404 filter (Beginner)",
+  "Google Search Console: Crawl stats report with host status, breakdown example URLs, and Discovery purpose (Intermediate)",
+  "Bing Webmaster Tools: AI Performance report with Grounding queries and Pages tabs (Intermediate)",
+  "Google Search Console: URL Inspection Test live URL, View tested page Screenshot and More info, Request indexing (Beginner)",
+  "PageSpeed Insights: read field data before lab score, origin-level fallback, Lighthouse version check (Intermediate)",
+  "Screaming Frog: v25 Configurable issues in Issues tab (type, priority, disable; Found in Crawl vs All Issues) plus Social tab (Intermediate)",
+  "Google Trends: Interest by metro with the Subregion menu and list view to pick location pages (Beginner)",
+  "Schema Markup Validator: openingHoursSpecification vs Business Profile hours, 00:00 closed and 23:59 open-24 rules, validFrom/validThrough (Intermediate)",
+  "Ahrefs: Organic keywords SERP features filter Current > Include target in > AI Overview, plus AI citations module (Beginner)",
+  "Surfer: Audit Internal Links section with Show details, plus Select competitors by matching intent (Intermediate)",
+  "Rich Results Test: Crawling details (Crawled successfully vs Crawl failed, Crawled as, Crawl allowed, Page fetch), detected schema, and Share link to check Google access on any URL (Beginner)",
+  "GA4: Search Console collection published from Library, Google organic search traffic report (landing page rows with GSC clicks, engaged sessions, key events) (Intermediate)",
+  "Census Reporter: place profile Social section (foreign-born, veteran status) with comparison to metro, state and U.S., plus Explore and CSV download (Beginner)"
+ ],
+ "stories_covered": [
+  "September 2026 spam update",
+  "Google AI content fact-check guidance",
+  "AI Overviews on 80% of branded queries",
+  "GBP 4-day suggested edit window",
+  "Google Maps reviews sign-in",
+  "Penske Media AI Overviews lawsuit dismissed",
+  "AI Overview links opening AI Mode",
+  "Gemini 3.8 in AI Mode",
+  "Google AI Contribution pilot",
+  "AI Overview citation cards moved to bottom",
+  "Search Console generative AI performance report",
+  "Gemini UTM parameters for referral attribution",
+  "AI Overview st_source tracking parameter test",
+  "September 2026 spam update phase two",
+  "LSA phone number hidden by default",
+  "LSA wrong-location bug",
+  "Google Ads location asset requirements clarified",
+  "GBP Misuse of support channels policy",
+  "AI Mode monitoring live for all",
+  "Google Ads sitelinks in AI Mode test",
+  "ChatGPT Ads updates and expansion",
+  "Helpful content doc: fake creator profiles called deception",
+  "Helpful content doc: new Main content section and rater criteria",
+  "Core update expected before year-end (Montti speculation)",
+  "Gary Illyes crawl, indexing and recovery timing ranges",
+  "SOCi Local Discovery Index: AI use for local discovery 52%",
+  "OpenAI dots and AI Mode monitoring as standing instructions",
+  "BrightLocal Local AI Visibility Tracker",
+  "Glenn Gabe AI Mode queries in Search Console guide",
+  "September 2026 spam update phase three (Oct 4-6)",
+  "Barcelona: scaled content bigger problem than link spam, 40 billion spam pages a day, AI used for spam detection",
+  "Lily Ray next big update prediction",
+  "Lily Ray self-ranking listicle AI Overview citation data",
+  "Google Maps advertising and solicitation policy clarified for listings and posts",
+  "Search Console multi-select country filter",
+  "Rank trackers caught in Google anti-scraping (SEJ Montti)",
+  "Search generative AI control child property override notification",
+  "Google explains 'couldn't fetch' sitemap errors (Mueller, Splitt)",
+  "Crawl rate doc adds Retry-After guidance",
+  "Google Search Central SEO learning path playlists",
+  "AI Mode website panel for brand searches test",
+  "Copilot in Edge requires sign-in",
+  "September 2026 spam update complete (Oct 8, about 14 days)",
+  "Manual action spike reports (Marie Haynes, unconfirmed)",
+  "Google local panel WhatsApp button",
+  "Healthcare review snippets dropped (Schema App, unconfirmed)",
+  "LSA How leads work update: 20-second missed calls charged",
+  "ChatGPT GPT-6 and Intelligent UI",
+  "People Also Ask fewer AI answers (SEW)",
+  "Anthropic Usage Policy bans manipulating AI answer sources (effective Nov 12, 2026)",
+  "Google UGC Fresh Data Program",
+  "Dan Taylor: judge updates only after 10-14 days of settling",
+  "Bing local pack without borders test (and unconfirmed favicon removal test)",
+  "AI Mode three bottom ads (SEW, unconfirmed)",
+  "Mueller: AI crawlers fetch sitemaps and RSS, llms.txt not used",
+  "Bluehost AI crawler data via SEJ (1 ChatGPT referral per 5,350 crawls)",
+  "Rank trackers struggling: IP blocks, captchas, Nozzle poisoned SERPs (SER Oct 12, de Graff Oct 11)",
+  "Search Console Performance report 64+ hours delayed (Oct 11), back to normal Oct 12",
+  "Mueller and Splitt: HTML sitemaps don't replace XML sitemaps",
+  "SEL case study: AI Mode follow-up questions as a practice page content map (Yext citation data)",
+  "PMax option sends users to Google-hosted Business Profile",
+  "AI Overviews for typos and no-match queries",
+  "Microsoft-Decision-1 experiment in Copilot (Bing unconfirmed)",
+  "Ahrefs: ChatGPT citations shift to primary sources (Reddit -88%, Wikipedia -80%, fan-outs 1.6 avg, official/price fan-outs up) via SEJ Oct 12",
+  "Search Console custom date range picker broken (1969 end date, Oct 13)",
+  "SEL guide: owner replies to bad Google reviews (Miriam Ellis, Oct 12)",
+  "Search Off the Record PDFs episode (Splitt, Mueller, Oct 13): PDF-to-HTML conversion, slow recrawl, scanned PDFs, AI Overviews",
+  "Old domain reappearing four months after a domain move (Mueller, Marie Haynes theory; SER and SEJ Oct 13)",
+  "Bing Webmaster Tools Topics Portfolio beta in AI Performance",
+  "Gemini 4 Argon in AI Mode for Pro and Ultra subscribers (links included)",
+  "AI Mode left sidebar test on main results (SER Oct 14, unconfirmed)",
+  "SEL opinion: gated content is invisible to AI search (DiNardi)",
+  "ChatGPT GPT-6 drops UTM tags and referrer, clicks show as Direct (SER, de Graff Oct 14)",
+  "Google Non-Canonical Cabinet episode 1: URL keywords incredibly small signal, hyphens over underscores, emoji (Oct 14)",
+  "Semrush AI Visibility Index: mentions vs citations (SEL Oct 14)",
+  "Yoast SEO 28.7: AI Abilities edit SEO titles and meta, deprecated code removed (Oct 13)",
+  "Google app Ask Google search bar test with plus button (SER Oct 15, unconfirmed)",
+  "SEL: track AI prompts in the revenue language (Jessier Oct 14)",
+  "Google AI Mode and AI Overviews: more inline links, official-sites top section test, related article thumbnails, news carousels expansion, Preferred Sources 7x (Oct 15)",
+  "Google AI Mode video creator names link to Search profiles (test, Oct 15)",
+  "Search Console still lacks AI click data; Google: additional metrics over time (SER Oct 15)",
+  "SEL: entity confusion and Knowledge Graph hijacked entities hurt AI recommendations (Franco, Oct 15)",
+  "Profound: ChatGPT tagged-link share fell 98% to 66% Oct 8-14 as Intelligent UI grew to 35% (Oct 14)",
+  "SEJ Dan Taylor prediction model: 96.8% chance of a Google update within a month (Oct 15)",
+  "Bill Hartzer: Search Console branded filter labels 77% of clicks branded on generic domain (Oct 15)",
+  "Chrome test: AI Mode side panel opens on the right by default (SEW Oct 15)",
+  "Ranking volatility and chatter spike Oct 16-19, no confirmed update (SER, SEW; Discover/News complaints)",
+  "BrightLocal: Google serving poisoned SERPs to tools; Local Rank Tracker affected, Local Search Grid and Maps not (Oct 16)",
+  "Glenn Gabe retest: ChatGPT, Claude, Perplexity can't render JavaScript; Gemini and Copilot mostly can (Oct 19)",
+  "Google Posts tested higher in local panel (Ben Fisher, SER Oct 19)",
+  "SEL: Ask Maps guide, make your business easier to recommend (Abreu, Oct 16)",
+  "Marie Haynes: migration issues may be site quality (SEJ Oct 16)",
+  "LSA featured professionals removed, headshots optional (SER Oct 19)",
+  "ChatGPT UTM bug confirmed secondhand by OpenAI to Huesler, fix rolling out Oct 15 (SEJ)",
+  "AI Mode Source preferences button in citations test (SER Oct 19)",
+  "Preprint: OpenAI API and Google only partly match ChatGPT citations, 44.5% of pages in one of 20 runs (SEJ Oct 18)",
+  "GBP review appeals delayed again, no timeframe, no duplicate appeals (Google forum Oct 16; SER Oct 20)",
+  "SEL content pruning case study (Crowe, Oct 19): 198 of 600 URLs cut, clicks +37%, causation unproven",
+  "Fudan preprint: 8 of 10 AI search tools cited a made-up concept within a week (SEJ Oct 19)",
+  "Mueller: bracketed URLs and percent-encoded versions are not equivalent (SER Oct 20)",
+  "Google testing ads in AI Mode for Personal Intelligence users (SER Oct 19)",
+  "RESONEO Gemini citations study: 80% of cited passages start in first half of page (Oct 2026)",
+  "GSC Wizard: AI-shaped queries 0.13% of impressions, median share up about 7x (Bobbink Oct 14)",
+  "AI Mode side panel on regular results, signed-out message (SEW Oct 20)",
+  "GBP government ID verification test (Digital Jedi, SER Oct 20, unconfirmed)",
+  "Ranking volatility and chatter Oct 20-21, no confirmed update (SER Oct 21)",
+  "Google URL structure doc: hyphens clearly signal a word boundary (SER Oct 21)",
+  "Control what you share with Google doc updated with robots meta, data-nosnippet, X-Robots-Tag, Search generative AI control (Oct 21 changelog)",
+  "Bing tests no sitelinks (Bherwani Oct 19, SER Oct 20)",
+  "Cloudflare and OpenAI pilot: ChatGPT search found hundreds of millions of new pages (SEJ Oct 20)",
+  "AI Overviews labels missing on some desktop results (Gabe, SER Oct 20)",
+  "Meta Muse and OpenAI dots agents: no user agent, accessibility tree (SEJ Manic Oct 20)",
+  "Chrome Canary Share tab with AI Mode test (SEW Oct 19)",
+  "PHP critical vulnerabilities (PHP2Shell) and Mueller: use HTTP 503 when taking sites down (Oct 21)",
+  "Marie Haynes 100-site study: ChatGPT 0.62% of Google organic sessions, GEO a distraction (SEL Oct 21)",
+  "Ahrefs: Google SERP poisoning affects 5-20% of results, filtering and cleanup of past data (Oct 22)",
+  "Google Non-Canonical Cabinet episode 2: robots.txt not an art canvas, invalid lines silently discarded (Oct 21)",
+  "AI Mode tests two responses and asks which is better (SEW Oct 21)",
+  "Gemini Search Google toggle per prompt (SEW Oct 19, unannounced)",
+  "Kevin Indig: no detectable hidden AI traffic in Direct, engaged Direct flat (SEL Oct 21)",
+  "DeepSeek says its search filters GEO manipulation (SEW Oct 20)",
+  "Google Business Home closed beta, Gemini-built dashboard for GBP, YouTube, Ads, Merchant Center (SER Oct 22, Google help)",
+  "Local knowledge panel layout swap test (Ben Fisher, SER Oct 22, unconfirmed)",
+  "UpdraftPlus UpdraftCentral key breach, fixed in 1.26.13/2.26.13 (SEJ Oct 21)",
+  "Rank trackers explain handling of poisoned results: SEOmonitor, AccuRanker, BrightLocal, Nozzle 8.7% (SEJ Oct 23)",
+  "AI Mode tab menu test hides other tabs under All (SEW Oct 23)",
+  "Semrush: AI Overviews on 88% of 400 commercial keywords (PPC Land, SEL Oct 22)",
+  "The SEO Works AI referral benchmark: organic 39x AI traffic, 3.2 AI conversions per 100 organic (SER Oct 22)",
+  "Ranking volatility heated Oct 24, no confirmed update, status dashboard clear (SER Oct 25)",
+  "GBP advanced performance reports test: Overview, Engagement, Reviews, Audience, Search trends (Raturi, Amir; SER Oct 23)",
+  "AI Overview citation cards with AI-generated summaries (Brodie Clark; SER Oct 23)",
+  "JPEG XL not supported in Google Images or Discover (Mueller; SER Oct 23)",
+  "SISTRIX citation worthiness study: TOC 1.7, Article schema 1.6, FAQPage 1.5, author box 1.4, llms.txt no effect (Oct 22)",
+  "Seer Interactive: ChatGPT runs 8 minutes apart shared zero queries, 34 of 40 retrieved URLs uncited (Oct 22)",
+  "Gemini Personal Intelligence uses Google Maps searches and saved places (9to5Google Oct 22)",
+  "Google UGC spam guide: Only index content meant for Search, noindex link-shared and generated pages (Oct 26)",
+  "Ranking volatility spike Oct 27, unconfirmed (SER), fourth bump since Oct 16",
+  "Mueller: Page Indexing report freshness, indexing changes show in performance reports first (SER Oct 27)",
+  "Google Ads AI-generated review summaries help doc (SER Oct 26)",
+  "AI Overviews on over 80% of searches (SER Oct 26: Semrush Sensor, SE Ranking 82.5% brand, seoClarity 62%)",
+  "Searchable via Press Gazette: AI engines cite official sources for UK local queries, ChatGPT 81.3% council/government (Oct 22)",
+  "Ben Fisher: AI Overview inside hotel knowledge panel (SER recap Oct 26, unconfirmed)",
+  "GBP auto-adding Facebook Messenger m.me links (Darcy Burk, SER Oct 28, unconfirmed)",
+  "GBP asks some businesses for EIN and privacy policy URL for message button (Syed Amir, SER Oct 28)",
+  "Favicon doc: Googlebot must follow homepage redirects; Mueller says wording tested as AI prompt (Oct 27)",
+  "Bing Scan to Call QR code test in local pack or ads (Bherwani, SER Oct 28, unconfirmed)",
+  "Muck Rack What Is AI Reading? Oct 2026: 84% earned/third-party citations, owned 15.2%, Perplexity 94% repeat (Oct 28)",
+  "Graphite via SEJ: brands rarely named without search rarely named with search (Oct 26)",
+  "Illyes and Prommawin Non-Canonical Cabinet: 404s not a penalty, don't drain crawl, 404/410 vs relevant redirects, helpful 404 page (SER Oct 28)",
+  "Mueller: Search Console doesn't show all spammy links, ignore random ones (Reddit, SER Oct 29)",
+  "AI Overviews citation cards possibly dropped on desktop (Brodie Clark, SER Oct 29, unconfirmed)",
+  "Semrush confirms poisoned Google results, filters invalid results (Semrush Oct 27)",
+  "Google expands AI Mode ads to 10 countries, multiturn ads in U.S. (SER Oct 28)",
+  "AI Overviews query refinement bubbles into AI Mode (Gagan Ghotra, SER Oct 29)",
+  "OpenAI Signals: information seeking 20.2% vs writing 21.4% of consumer ChatGPT messages, Sept 2026 (SEJ Oct 27)",
+  "DEJAN: AI Mode receives Knowledge Graph biographies with no URL (Oct 28, unverified)",
+  "Ranking volatility continued Oct 28-29, unconfirmed (Schwartz Bluesky)",
+  "Gemini stopped attaching utm_source=gemini around Sept 28; iOS app sends no referrer (Natzir, SER Oct 30)",
+  "Cyrus Shepard AI Overviews/AI Mode opt-out study: ~0.9% AI CTR, organic clicks also dropped (SER Oct 30)",
+  "Illyes: AI made Googlebot impersonation worse, verify with reverse DNS and IPs (Odys Podcast, SER Oct 30)",
+  "Mueller Iwanow interview: AI spam tricks caught eventually, Crawl Stats underused, redirect chains not automatically a problem (SER Oct 29)",
+  "num=100 parameter possibly back (Brodie Clark, SER Oct 30, unconfirmed)",
+  "Bing ads inside Copilot AI Overviews (Bherwani, SER Oct 30, unconfirmed)",
+  "GBP AI-powered messaging pilot expands (Tomina, Blumenthal; SER Oct 29)",
+  "OpenAI Aura safety check can block sites from ChatGPT browsing (Dan Taylor, SEJ Oct 29, unconfirmed)",
+  "Google: AI Mode queries 3x longer than traditional searches (Ginny Marvin, SEJ Oct 29)",
+  "Shared AI training control __usage_ai-training: Google (early 2027), Microsoft (Feb 1, 2027), OpenAI, Anthropic draft (Oct 30)",
+  "Bing AI Training and AI Grounding preferences, DisallowExtended, NoArchive/NoCache retired Mar 1, 2027 (Oct 30)",
+  "Illyes: nothing to announce yet on AI click data in Search Console (LinkedIn; SER Nov 2)",
+  "Reddit CEO: AI Mode does not drive traffic, search referrals down 1M+/week, login-only test outside U.S. (SEJ Oct 30)",
+  "DebugBear RUM script hijacked via DNS, remove it (SEJ Oct 31)",
+  "Google Ads strategists with AI-generated names and photos (Youngblood; SER Nov 2, unconfirmed)",
+  "Washington Post via Glenn Gabe: chatbots cite obscure AI-built voter sites, Copilot 75%, ChatGPT 22% (Nov 1)",
+  "TJ Robertson AI citation study: direct answers 20% vs 5%, updated within 12 months 88% higher odds (Oct 25; SEJ Oct 31)",
+  "Google Connected Apps developer preview for AI Mode and Gemini (SEJ Oct 31)",
+  "Mueller: only home page indexed after hack likely general quality issue (Bluesky Nov 2; SER Nov 3)",
+  "Mueller Iwanow interview: AI systems build on SEO, technical SEO remains relevant, listicle-only strategy will switch off (SEJ Nov 2)",
+  "Mueller: block popup via robots.txt on popup domain or its own JS file (Reddit; SER Nov 3)",
+  "AI Overviews in right column for brand searches replacing knowledge panels (Long, McSweeney; SER Nov 2, unconfirmed)",
+  "Martin Splitt at SERP Conf: traditional SEO works for AI search, more impressions fewer clicks (Schwartz Bluesky Nov 3)",
+  "AI Mode button removal test (Len Raleigh; SER Nov 3, unconfirmed)",
+  "Google Q3 2026 earnings: one seamless experience across AI Overviews, AI Mode, Search; Gemini app 1B users (Marie Haynes Oct 30)",
+  "Vanessa Fox AI crawler settings by host and CDN (Cloudflare ad-supported default, Squarespace toggle; Oct 25-30)",
+  "Lighthouse 13.6 in PageSpeed Insights changes Lantern simulation, higher lab scores (Pollard Nov 2; SEJ Nov 2-3)",
+  "SE Ranking and Nozzle: Google results matching one word of a query, mostly position 9+ and page 2 (SEJ Nov 3)",
+  "OpenAI Adam Fry: Google about 5x ChatGPT search-like queries; Ahrefs Oct referrals Google 24.74% vs ChatGPT 0.36% (SEJ Nov 3)",
+  "Ahrefs via PPC Land: AI Overviews on 63 of 100 brand names by Sept 30, up from 5 of 98 July 1 (Nov 3)",
+  "Lighthouse 13.6 ARD audit updated to v0.91 spec (ard.json) (Oct 27)",
+  "Google rewrites Crawled - currently not indexed help text: common, not necessarily an issue, URL Inspection, report an indexing issue form (SER Nov 3)",
+  "Glenn Gabe: site-level quality algorithms can sharply drop indexing (Bluesky Nov 3)",
+  "Facebook Answers fb-answers AI pages 6M+ indexed, Gabe calls scaled content abuse (Westbrook; SER Nov 5)",
+  "Illyes: Google temporarily protected VLC URL during HTTP 418, snippet and favicon lost (LinkedIn; SER Nov 5)",
+  "Search Console click spikes from Oct 31, back to normal for some Nov 4 (SER, SEL)",
+  "Search Console Performance report multi-select device filter (SER Nov 4)",
+  "Google Ads AI content labels expand to California, South Korea, Vietnam (SER Nov 5)",
+  "AI Mode home services booking and quote links via Angi, Thumbtack, Housecall Pro, Jobber (Stein; SEJ Nov 4)",
+  "Tame the Bots: Gemini fetches as Google, AI Mode as Google-Lens user agent (Nov 3)",
+  "Screaming Frog SEO Spider 25.0 (Nov 3) and 25.1 (Nov 4)",
+  "Google Maps Message button next to Call on Android and iOS, routes to WhatsApp or SMS (Landsman bulletin; SER Nov 6)",
+  "Marie Haynes via SEJ: November Search Console click spikes are bot traffic, Position > 10 filter (Nov 5)",
+  "GBP Manage offers help doc: offer chips on placesheet and AI Overviews, remove unauthorized third-party offers (SER Nov 6)",
+  "Google Search Profiles adding LinkedIn automatically (Andell; SER Nov 5)",
+  "AI Mode 'Continue with this search?' prompt (Andel; SER Nov 6, unconfirmed)",
+  "AI Mode Personal Intelligence opt-in pop-up (Patel; SER Nov 6)",
+  "Bing AI visual summary button on snippets (Bherwani; SER Nov 6)",
+  "Gemini Business Profile linking for Workspace accounts announced in Nov bulletin, help page still excludes work accounts; one-profile limit; Generate hours (SEJ Nov 6)",
+  "SenseGap: Google's reverse DNS step 2 accepts googleusercontent.com, Google Cloud VMs pass as Googlebot; fake AI bot shares (Nov 5)",
+  "ChatGPT 'Claim your business' Business Hub screenshots (Kaziukenas; SER Nov 6, unconfirmed)",
+  "Ranking volatility Nov 8-9, unconfirmed (SER Nov 9)",
+  "Brave search index sold to AI companies, NYT lawsuit, no separate user agent (SEJ Nov 6)",
+  "Cloudflare CEO: AI agent optimization new version of SEO, OpenAI pays for change signals (SEJ Nov 8)",
+  "AI Overview local pack test drops action buttons, photos, reviews; replaces local pack on mobile (Hawkins; SER Nov 10, unconfirmed)",
+  "Glenn Gabe: AI Overviews France rollout July 22, five sites, clicks 750 to 400, YMYL drops, some unaffected (gsqi Nov 9; PPC Land)",
+  "Mueller: new sites need time for unique value, quality over quantity, Request indexing errors (Bluesky Nov 9; SER Nov 10)",
+  "Graphite State of GenAI via SEJ: 76B monthly AI sessions, AI under 1% of traffic, organic 49x AI referrals, comparison with search dropped (Nov 9)",
+  "SEJ: Search Console AI report impressions only, no AI clicks; CMA Dec 3 deadline (Ziff Davis, Nov 9)",
+  "SEJ: Shepard opt-out test, AI features about 21% of Zyppy clicks (Nov 9 write-up)",
+  "Google Ads pay-per-lead goals terms setting (Kaurra; SER Nov 10)",
+  "Google November 2026 core update started Nov 10, up to 2 weeks (Search Status Dashboard; SER, PPC Land)",
+  "GBP Book online buttons added automatically, some 500 errors, contact page links trigger it (Schwartz, Hawkins, Schmidt, Amir; SER Nov 9)",
+  "ChatGPT Business Hub beta live: claim profiles, mentions, profile views, website clicks, discovery topics (SER Nov 10)",
+  "Court dismisses Google's amended DMCA complaint against SerpApi, Google can amend by Nov 30 (SER Nov 10)",
+  "Gemini 4 Carbon in AI Mode for Google AI Ultra subscribers (SER Nov 10)",
+  "ChatGPT logged-out force_guest_search parameter shows five classic links (Shamrai Nov 7, unconfirmed)",
+  "Google CDN guidance: crawl spike after CDN move, empty cache hits origin, don't blanket-block Googlebot, 429/503 only briefly (Illyes, Prommawin; Nov 11)",
+  "Mueller: Crawled/Discovered not indexed usually means quality systems unconvinced, shrinking site doesn't raise quality (Bluesky Nov 10; SER Nov 11)",
+  "ChatGPT Business Hub claim rules: local businesses only existing U.S. listing, service-area businesses not yet, Persona ID check (BrightLocal Nov 11)",
+  "AI Overviews fully expanded by default for definition searches (Gabe; SER Nov 11, unconfirmed)",
+  "Ahrefs: Where ChatGPT gets its information, brand questions 59% company sites, 83% cite brand's own site, OAI-SearchBot (Nov 10)",
+  "Yahoo Scout out of beta, 3B answers, Pivot Search rebuild (SER Nov 10)",
+  "Google help doc: identify Google Search traffic by Referer, blank referrers, Images/Discover same values, mismatch with Search Console (Nov 12)",
+  "Gemini 4 Hydrogen default model in AI Mode for all users, used for hardest AI Overview questions, broader fan-out links (Nov 12)",
+  "Search Console Generative AI performance report impressions logging bug Nov 9-11 (data anomalies page; SER Nov 12)",
+  "SEJ ChatGPT Business Hub walkthrough: claiming doesn't guarantee placement, mentions need website reference, no multi-location management, no P.O. boxes (Nov 12)",
+  "Thrive Business Visibility Index Vol. 3: 80 law firms, 29 known by every engine and recommended by none, legal directories cited (Oct 29; SER recap Nov 12)",
+  "Core update day 7: first real weekend swing Nov 14, chatter muted, trackers blocked, GSC laggy (SER Nov 16)",
+  "Glenn Gabe: Harvard health domain move started right before the core update (Bluesky Nov 14)",
+  "ChatGPT business agents and agent builder first look, verified checkmark and Start chat (SER Nov 16; Lily Ray)",
+  "AI Mode drops Gemini model label (Patel: intended), Gemini 4 Carbon to AI Pro subscribers (SER Nov 16)",
+  "Google tests removing AI Mode tab and Ask anything box in AI Overviews (Gabe; SER Nov 13, unconfirmed)",
+  "Bing tests Web Mode tab, web pages only (Bherwani, Venkat; SER Nov 16)",
+  "ChatGPT tests web-only results and See more for the AI answer (SER Nov 16, unconfirmed)",
+  "AI Mode start temporary thread (Ghotra Nov 14; SER Nov 16)",
+  "AI Overviews AI-generated images return for some (Hobson; SER Nov 13)"
+ ],
+ "workflow_hacks_covered": [
+  "HubSpot: snippets with # shortcut for repeat ticket replies (Beginner)",
+  "Asana: keyboard shortcuts to clear My Tasks (Beginner)",
+  "HubSpot: saved ticket view filtered by owner and status, set as default tab (Intermediate)",
+  "Asana for Slack: Create a task from a Slack message, /asana create, and memo emoji reaction (Beginner)",
+  "Search Console: Query Custom (regex) filter for question searches, plus Page Doesn't match regex /blog/ (Intermediate)",
+  "Asana: Advanced Search with Assigned by, incomplete, due within next 7 days, starred to save (Beginner)"
+ ],
+ "mistakes_covered": [
+  "GBP business name with city appended for a multi-location firm",
+  "Redirect map with a redirect chain (/custody/ to an old URL that redirects again)",
+  "Phone number in a meta title (Onsite SEO > Meta Titles)",
+  "\"We will\" guarantee wording in a practice page intro (Content Guidelines > Messaging)",
+  "\"Photo of\" at the start of image alt text (Content Guidelines > Image Alt Text)",
+  "\"Click here\" anchor text in a blog post internal link (Onsite SEO > Anchor Text)"
+ ],
+ "podcast_episodes_covered": [],
+ "guideline_notes_covered": [
+  "Ask Google to recrawl your URLs: crawl timing and recrawl request quota",
+  "Build and submit a sitemap: Submit your sitemap to Google (a sitemap is merely a hint)",
+  "Review snippet structured data: Technical guidelines (self-serving reviews on LocalBusiness/Organization pages)",
+  "Google Search's core updates and your website: Check if there's a traffic drop in Search Console (wait at least a full week after a core update completes)",
+  "Understanding page experience in Google Search results: How important is page experience to ranking success? (most relevant content even if page experience is sub-par)"
+ ],
+ "archive": [
+  {
+   "edition": 1,
+   "date": "2026-10-02",
+   "lead": "The September spam update is still rolling, and Google just told everyone to fact-check their AI content",
+   "path": "editions/edition-001.html"
+  },
+  {
+   "edition": 2,
+   "date": "2026-10-02",
+   "lead": "Google starts labeling AI clicks: Gemini adds UTM tags, and AI Overviews test a tracking parameter",
+   "path": "editions/edition-002.html"
+  },
+  {
+   "edition": 3,
+   "date": "2026-10-05",
+   "lead": "Google now calls fake author profiles \"deception\" and puts main content at the center of page quality",
+   "path": "editions/edition-003.html"
+  },
+  {
+   "edition": 4,
+   "date": "2026-10-06",
+   "lead": "The spam update looks to be in its final phase, and Google says scaled content is now a bigger problem than link spam",
+   "path": "editions/edition-004.html"
+  },
+  {
+   "edition": 5,
+   "date": "2026-10-07",
+   "lead": "Google explains the \"couldn't fetch\" sitemap error, and it often has nothing to do with the file",
+   "path": "editions/edition-005.html"
+  },
+  {
+   "edition": 6,
+   "date": "2026-10-08",
+   "lead": "The September spam update is done after two full weeks",
+   "path": "editions/edition-006.html"
+  },
+  {
+   "edition": 7,
+   "date": "2026-10-09",
+   "lead": "Claude's new rules ban faking the sources that AI answers rely on",
+   "path": "editions/edition-007.html"
+  },
+  {
+   "edition": 8,
+   "date": "2026-10-12",
+   "lead": "Your rank tracker may be wrong right now. Check Search Console before you report a drop.",
+   "path": "editions/edition-008.html"
+  },
+  {
+   "edition": 9,
+   "date": "2026-10-13",
+   "lead": "ChatGPT is citing the sources that create information more, and the sites that summarize it less",
+   "path": "editions/edition-009.html"
+  },
+  {
+   "edition": 10,
+   "date": "2026-10-14",
+   "lead": "Google explains how it handles PDFs, and why an old PDF can outlive the fix",
+   "path": "editions/edition-010.html"
+  },
+  {
+   "edition": 11,
+   "date": "2026-10-15",
+   "lead": "ChatGPT clicks are landing in GA4 as Direct traffic since GPT-6",
+   "path": "editions/edition-011.html"
+  },
+  {
+   "edition": 12,
+   "date": "2026-10-16",
+   "lead": "Google is adding more links to AI answers, and testing a top spot for official sites",
+   "path": "editions/edition-012.html"
+  },
+  {
+   "edition": 13,
+   "date": "2026-10-19",
+   "lead": "Rankings got bumpy over the weekend, but Google hasn't confirmed an update",
+   "path": "editions/edition-013.html"
+  },
+  {
+   "edition": 14,
+   "date": "2026-10-20",
+   "lead": "Google says review appeals are backed up, and it can't say for how long",
+   "path": "editions/edition-014.html"
+  },
+  {
+   "edition": 15,
+   "date": "2026-10-21",
+   "lead": "Google appears to be testing a new way to verify a Business Profile: a photo of your government ID",
+   "path": "editions/edition-015.html"
+  },
+  {
+   "edition": 16,
+   "date": "2026-10-22",
+   "lead": "A critical PHP flaw means urgent site updates. If a site has to go offline, Google says use a 503.",
+   "path": "editions/edition-016.html"
+  },
+  {
+   "edition": 17,
+   "date": "2026-10-23",
+   "lead": "Google is testing Business Home, a new dashboard that puts a Business Profile next to YouTube and Ads",
+   "path": "editions/edition-017.html"
+  },
+  {
+   "edition": 18,
+   "date": "2026-10-26",
+   "lead": "Rankings swung hard on Saturday, and Google still hasn't confirmed an update",
+   "path": "editions/edition-018.html"
+  },
+  {
+   "edition": 19,
+   "date": "2026-10-27",
+   "lead": "Google says pages made for sharing, not searching, should stay out of its index",
+   "path": "editions/edition-019.html"
+  },
+  {
+   "edition": 20,
+   "date": "2026-10-28",
+   "lead": "Google is adding Facebook Messenger links to Business Profiles on its own",
+   "path": "editions/edition-020.html"
+  },
+  {
+   "edition": 21,
+   "date": "2026-10-29",
+   "lead": "Google says 404 errors aren't a penalty, and fixing them is optional",
+   "path": "editions/edition-021.html"
+  },
+  {
+   "edition": 22,
+   "date": "2026-10-30",
+   "lead": "Gemini stopped tagging its links, and its iPhone app visits land in GA4 as Direct",
+   "path": "editions/edition-022.html"
+  },
+  {
+   "edition": 23,
+   "date": "2026-11-02",
+   "lead": "Google, Bing, OpenAI and Anthropic back one robots.txt line for AI training, and Bing splits training from AI answers",
+   "path": "editions/edition-023.html"
+  },
+  {
+   "edition": 24,
+   "date": "2026-11-03",
+   "lead": "Only the homepage indexed after a hack? Google's Mueller says look at site quality first",
+   "path": "editions/edition-024.html"
+  },
+  {
+   "edition": 25,
+   "date": "2026-11-04",
+   "lead": "PageSpeed scores may jump this week, even on pages nobody touched",
+   "path": "editions/edition-025.html"
+  },
+  {
+   "edition": 26,
+   "date": "2026-11-05",
+   "lead": "Google says \"Crawled, currently not indexed\" is common and often needs no fix",
+   "path": "editions/edition-026.html"
+  },
+  {
+   "edition": 27,
+   "date": "2026-11-06",
+   "lead": "Google Maps puts a Message button right next to Call on business listings",
+   "path": "editions/edition-027.html"
+  },
+  {
+   "edition": 28,
+   "date": "2026-11-09",
+   "lead": "Google says Gemini can now manage Business Profiles from work accounts, but its own help page still says no",
+   "path": "editions/edition-028.html"
+  },
+  {
+   "edition": 29,
+   "date": "2026-11-10",
+   "lead": "Google tests an AI local pack with no Call, website or directions buttons",
+   "path": "editions/edition-029.html"
+  },
+  {
+   "edition": 30,
+   "date": "2026-11-11",
+   "lead": "Google's November 2026 core update is rolling out. Grab a baseline now, judge it later.",
+   "path": "editions/edition-030.html"
+  },
+  {
+   "edition": 31,
+   "date": "2026-11-12",
+   "lead": "Google warns that a new CDN can set off a Googlebot crawl spike, and blocking it can push pages out of Search",
+   "path": "editions/edition-031.html"
+  },
+  {
+   "edition": 32,
+   "date": "2026-11-13",
+   "lead": "Google explains how to find its traffic in GA4 and server logs, and why the numbers never match Search Console",
+   "path": "editions/edition-032.html"
+  },
+  {
+   "edition": 33,
+   "date": "2026-11-16",
+   "lead": "Google's core update hit day 7 with its first real weekend swing, but trackers and Search Console are struggling to show it",
+   "path": "editions/edition-033.html"
+  }
+ ],
+ "learning_videos_covered": [],
+ "special_features_covered": [
+  "How do I show up more in ChatGPT? (client answer, three levers, myth or fact; Nov 13, 2026)"
+ ]
+}
+</script>
+
+<div class="wrap">
+<p class="label archive-note">Archive copy &middot; Edition No. 33 &middot; <a href="../index.html" target="_blank" rel="noopener">Read the latest edition</a></p>
+<header class="mast">
+  <div class="mast-top">
+    <span class="label">Monday, November 16, 2026 &middot; No FOMO Monday</span>
+    <span class="label">Edition No. 33</span>
+  </div>
+  <div class="mast-brand">
+    <svg class="mast-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <circle cx="16" cy="48" r="6.5" fill="#69CD2B"/>
+      <path d="M16 31a17 17 0 0 1 17 17" stroke="#69CD2B" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M16 18a30 30 0 0 1 30 30" stroke="#0091C9" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M16 5a43 43 0 0 1 43 43" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round"/>
+    </svg>
+    <div class="mast-name">
+      <span class="mast-the">The SMB</span>
+      <h1>Signal</h1>
+      <span class="mast-tag">Hold my coffee, Google changed something again.</span>
+    </div>
+  </div>
+  <p class="dek">SMB Team's morning SEO brief. The search news that matters for law firm clients, plus one thing to learn and one thing to do. About a 7 minute read. No FOMO Monday: the weekend's news, caught up. Today: a core update in its second week, ChatGPT agents for businesses, and a free Census tool for local market research.</p>
+  <div class="weather">
+    <span>Algorithm weather: <b>Breezy</b></span>
+    <span>Confirmed update: <b>November 2026 core update, Day 7 of up to 14</b></span>
+    <span>Started: Nov 10 (Google dashboard)</span>
+    <span>Status dashboard: <b>Core update listed, no other incidents</b></span>
+  </div>
+</header>
+
+<article class="lead">
+  <span class="label">Lead story</span>
+  <h2>Google's core update hit day 7 with its first real weekend swing, but trackers and Search Console are struggling to show it</h2>
+  <div class="body">
+    <p>Google's November 2026 core update started rolling out on Tuesday, Nov 10, and Google said it may take up to 2 weeks. Barry Schwartz reports that complaints about rankings, traffic and conversions picked up on Saturday, Nov 14, and that tracking tools in aggregate showed more volatility that day than on other days. He also calls the chatter more muted than for most core updates.</p>
+    <p>Schwartz suspects the quiet is partly because third-party tracking tools are struggling to monitor Google right now, and he notes that Search Console performance reporting has been laggy. Some of the charts people posted in reply to him predate the update, so treat the chatter as unconfirmed.</p>
+    <p>Glenn Gabe noted one example of why timing matters: Harvard started moving its health content to a new domain right before the update began. That is Gabe's observation, not a Google statement, but it shows how a big change during a rollout makes any movement hard to explain later.</p>
+  </div>
+  <div class="angle">
+    <span class="label">Law firm angle</span>
+    <p>Hold redesigns, migrations and large content changes on client sites until the rollout ends, so the before and after stay clean. Keep logging calls and form fills alongside Search Console data, because a lagging report is not proof that nothing moved. Judge impact by comparing dates in Search Console after the update completes, and wait at least a full week after it ends before you act on a drop.</p>
+  </div>
+  <p class="src">Sources: <a href="https://www.seroundtable.com/google-november-2026-core-update-ranking-volatility-42543.html" target="_blank" rel="noopener">Search Engine Roundtable: Google November 2026 Core Update Ranking Flux</a> &middot; <a href="https://status.search.google.com/summary" target="_blank" rel="noopener">Google Search Status Dashboard</a> &middot; <a href="https://bsky.app/profile/glenngabe.bsky.social/post/3n2bumkzbms2c" target="_blank" rel="noopener">Glenn Gabe on Bluesky</a></p>
+</article>
+
+<section>
+  <div class="section-head"><h2>Top headlines</h2><span class="label">4 stories</span></div>
+  <div class="briefs">
+    <div class="brief">
+      <h3><a href="https://www.seroundtable.com/openai-chatgpt-business-agent-42536.html" target="_blank" rel="noopener">ChatGPT business agents and the agent builder are starting to appear</a></h3>
+      <p>OpenAI launched the ChatGPT Business Hub last week with an agent builder, and Barry Schwartz says it is rolling out gradually, US-based businesses first. Juozas Kaziukėnas shared a first look at a verified business profile with a &ldquo;Start chat&rdquo; button, and Lily Ray says the builder pulls many recommendations from your website. Schwartz could not replicate it yet.</p>
+      <p class="why"><b>For law firms</b>Not available to every account yet, so there is nothing to set up today. Since the builder reads the website, check that each practice page states services, locations served and what happens on a consultation call in plain text.</p>
+    </div>
+    <div class="brief">
+      <h3><a href="https://www.seroundtable.com/google-ai-mode-drops-gemini-label-42540.html" target="_blank" rel="noopener">Google AI Mode drops the Gemini model label and widens Gemini 4 Carbon to AI Pro subscribers</a></h3>
+      <p>AI Mode no longer shows which Gemini model is in use, and Gemini 4 Carbon, which first went to AI Ultra subscribers, is now live for AI Pro subscribers. Google's Rajan Patel confirmed both are intended and said Google is working out how to bring back a model indicator.</p>
+      <p class="why"><b>For law firms</b>Different models can return different answers and links. When you screenshot AI Mode for a client check, record the date and signed-in or signed-out state, since the model is no longer visible.</p>
+    </div>
+    <div class="brief">
+      <h3><a href="https://www.seroundtable.com/google-dropping-ai-mode-again-42534.html" target="_blank" rel="noopener">Google tests removing the AI Mode tab and the &ldquo;Ask anything&rdquo; box (unconfirmed)</a></h3>
+      <p>Glenn Gabe saw a results page with no AI Mode tab and no &ldquo;Ask anything&rdquo; follow-up box under an AI Overview. Schwartz could not replicate it and says it may be one of Google's routine tests. This follows an earlier test that removed AI Mode buttons from the Google homepage.</p>
+      <p class="why"><b>For law firms</b>Treat it as a test. Keep your AI visibility checks consistent from month to month so a layout change does not look like a ranking change.</p>
+    </div>
+    <div class="brief">
+      <h3><a href="https://www.seroundtable.com/bing-web-mode-42535.html" target="_blank" rel="noopener">Bing tests a &ldquo;Web Mode&rdquo; tab that shows only web pages</a></h3>
+      <p>Microsoft is testing a Web Mode tab in Bing that removes AI and Copilot answers and other features and leaves only web page results. Schwartz can see it in some browsers but says it is not fully live. Google has had a similar Web filter since May 2024.</p>
+      <p class="why"><b>For law firms</b>No action. If it ships, people who pick it see classic results only, so normal Bing rankings are what count for them.</p>
+    </div>
+  </div>
+</section>
+
+<section class="desk">
+
+  <div class="panel">
+    <span class="label">Today's concept <span class="pill">Intermediate</span></span>
+    <h3>Eligibility for AI features</h3>
+    <span class="term">AI search &rsaquo; AI Overviews and AI Mode &rsaquo; Indexed and snippet-eligible</span>
+    <p>A page can only appear as a supporting link in AI Overviews or AI Mode if it is indexed and allowed to show a snippet in regular Google Search.</p>
+    <p>Why it matters: Google says there are no additional technical requirements and no special schema or AI text files needed. That makes eligibility a pass or fail check on basics you already control, and a page that fails it cannot be linked at all.</p>
+    <p>Legal example (hypothetical): a family law firm's divorce process page carries a <code>nosnippet</code> robots meta tag left over from an old template. The page ranks, but it is not eligible to be shown with a snippet, so it cannot be a supporting link in AI answers.</p>
+    <p>How to apply it:</p>
+    <ul>
+      <li>Confirm the page is indexed (Search Console URL Inspection) and not blocked by <code>noindex</code> or robots.txt.</li>
+      <li>Look for <code>nosnippet</code> or a very low <code>max-snippet</code> value in the page source and in the X-Robots-Tag header.</li>
+      <li>Remove accidental restrictions left by plugins or templates, and keep deliberate ones only where the client has a reason.</li>
+    </ul>
+    <p><b>Going deeper:</b> Meeting the requirements does not guarantee crawling, indexing or showing, so eligibility is necessary, not sufficient. Google's snippet doc also describes <code>data-nosnippet</code> for blocking parts of a page from snippets. The AI features doc does not say how partial blocks affect AI links, so test before you rely on either answer. For measurement, Google reports AI features inside the Web search type in the Performance report.</p>
+    <p class="src">Sources: <a href="https://developers.google.com/search/docs/appearance/ai-features" target="_blank" rel="noopener">Google: AI features and your website</a> &middot; <a href="https://developers.google.com/search/docs/appearance/snippet" target="_blank" rel="noopener">Google: Control your snippets in search results</a></p>
+  </div>
+
+  <div class="panel action">
+    <span class="label">Action item for today</span>
+    <h3>Check top practice pages for snippet blocks</h3>
+    <p>Catches accidental <code>nosnippet</code>, low <code>max-snippet</code> or <code>noindex</code> settings that make a page ineligible for AI Overviews and AI Mode links.</p>
+    <div class="check"><input type="checkbox" id="a1"><label for="a1">In Search Console, open <b>Performance &rsaquo; Search results &rsaquo; Pages</b> (last 28 days) and note the client's top 3 practice pages by clicks.</label></div>
+    <div class="check"><input type="checkbox" id="a2"><label for="a2">Open each page in Chrome, press <b>Ctrl+U</b> (<b>Cmd+Option+U</b> on Mac) and search the source for <code>snippet</code> and <code>noindex</code>. Note any <code>nosnippet</code>, <code>max-snippet</code>, <code>data-nosnippet</code> or <code>noindex</code>.</label></div>
+    <div class="check"><input type="checkbox" id="a3"><label for="a3">Paste each URL into the <b>Inspect any URL</b> bar at the top of Search Console and confirm <b>URL is on Google</b>. Under <b>Page indexing</b>, confirm <b>Indexing allowed? Yes</b>.</label></div>
+    <div class="check"><input type="checkbox" id="a4"><label for="a4">Remove restrictions nobody chose on purpose (often an SEO plugin setting or old template). Leave any the client set deliberately.</label></div>
+    <div class="check"><input type="checkbox" id="a5"><label for="a5">Add a note to the client's next monthly Asana task with the pages you checked and anything you changed.</label></div>
+  </div>
+
+  <div class="panel">
+    <span class="label">AI search watch</span>
+    <div class="watch">
+      <div class="watch-item">
+        <h4><span class="pill test">Test</span><a href="https://www.seroundtable.com/chatgpt-search-result-tests-42537.html" target="_blank" rel="noopener">ChatGPT tests web-only results and a &ldquo;See more&rdquo; button</a></h4>
+        <p>Schwartz covered several ChatGPT formats seen this week: web results shown first, then the richer layout, and an AI answer with a &ldquo;See more&rdquo; button followed by web results, much like Google's AI Overviews. He could not replicate any of them, so this is unconfirmed.</p>
+      </div>
+      <div class="watch-item">
+        <h4><span class="pill test">Test</span><a href="https://www.seroundtable.com/google-ai-mode-temporary-thread-42539.html" target="_blank" rel="noopener">AI Mode tests &ldquo;start temporary thread&rdquo;</a></h4>
+        <p>Gagan Ghotra spotted a pencil icon with a &ldquo;start temporary thread&rdquo; tooltip in AI Mode on Saturday. Gemini has had temporary chats for over a year. Nothing to do yet; it may change how screenshots of prompt checks look.</p>
+      </div>
+      <div class="watch-item">
+        <h4><span class="pill test">Test</span><a href="https://www.seroundtable.com/google-ai-overviews-ai-generated-images-back-42532.html" target="_blank" rel="noopener">AI-generated images return in AI Overviews for some searchers</a></h4>
+        <p>Google announced image generation in AI Overviews in July and paused it in August. Schwartz can replicate it in some browsers but not others, and wonders whether it is tied to the Gemini 4 Hydrogen update. The images are generated by Google, not pulled from sites.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <span class="label">Tool tip &middot; Census Reporter <span class="pill">Beginner</span></span>
+    <h3>Size up a client's market in two minutes with a place profile</h3>
+    <span class="term">censusreporter.org &rsaquo; search a place &rsaquo; profile page &rsaquo; Social section</span>
+    <p>Census Reporter is a free, independent site that makes American Community Survey (ACS, the Census Bureau's yearly survey) data easy to read. Each place profile shows a figure next to the same figure for the metro area, state and U.S., so you see right away whether a market is unusual.</p>
+    <ol>
+      <li>Go to <a href="https://censusreporter.org/" target="_blank" rel="noopener">censusreporter.org</a> and type the client's city in the search box, then pick the matching place.</li>
+      <li>On the profile page, scroll through the sections (Demographics, Economics, Families, Housing, Social) to the <b>Social</b> section.</li>
+      <li>Read <b>Foreign-born population</b> and <b>Veteran status</b>. Each shows the place's rate, then the comparison to the metro area, state and U.S.</li>
+      <li>Hover over a number to see its margin of error. If the margin is large next to the figure, treat it as a rough guide.</li>
+      <li>Check the note under the place name for which ACS release the data comes from. The current site was updated with the 2024 ACS data in February 2026.</li>
+    </ol>
+    <p><b>Law firm use case:</b> an immigration firm can see how large the foreign-born population is in each city it serves before choosing which location pages to build out. A family law or estate planning firm can use veteran status and household figures to pick examples and local detail for page copy and GBP posts.</p>
+    <p><b>Pro move:</b> use the site's <b>Explore</b> search to find a table by keyword, then download comparison data as CSV or Excel to compare several cities in one sheet.</p>
+    <p class="src">Docs: <a href="https://censusreporter.org/" target="_blank" rel="noopener">Census Reporter home</a> &middot; <a href="https://censusreporter.org/profiles/16000US4752006-nashville-davidson-metropolitan-government-balance-tn/" target="_blank" rel="noopener">Example place profile</a></p>
+  </div>
+
+  <div class="panel">
+    <span class="label">Conversion corner</span>
+    <h3>Put the next step in plain text, not only in a widget</h3>
+    <p>As AI tools and agents read practice pages to answer for the firm, the text on the page is what they can work with. Write the call to action and what happens next in plain text near the top: &ldquo;Call (555) 010-0100 for a free consultation. A paralegal will ask about your case, and an attorney reviews it the same day.&rdquo; (hypothetical wording). Google's AI features guidance also lists making sure important content is available in textual form.</p>
+    <p class="src">Source: <a href="https://developers.google.com/search/docs/appearance/ai-features" target="_blank" rel="noopener">Google: AI features and your website</a>; the plain-text call to action is SMB Team practice</p>
+  </div>
+</section>
+
+<footer>
+  <span class="label">Sources for this edition</span>
+  <ul>
+    <li><a href="https://www.seroundtable.com/google-november-2026-core-update-ranking-volatility-42543.html" target="_blank" rel="noopener">Search Engine Roundtable: core update ranking flux</a></li>
+    <li><a href="https://status.search.google.com/summary" target="_blank" rel="noopener">Google Search Status Dashboard</a></li>
+    <li><a href="https://bsky.app/profile/glenngabe.bsky.social/post/3n2bumkzbms2c" target="_blank" rel="noopener">Glenn Gabe on Bluesky</a></li>
+    <li><a href="https://www.seroundtable.com/openai-chatgpt-business-agent-42536.html" target="_blank" rel="noopener">Search Engine Roundtable: ChatGPT business agent</a></li>
+    <li><a href="https://www.seroundtable.com/google-ai-mode-drops-gemini-label-42540.html" target="_blank" rel="noopener">Search Engine Roundtable: AI Mode drops Gemini label</a></li>
+    <li><a href="https://www.seroundtable.com/google-dropping-ai-mode-again-42534.html" target="_blank" rel="noopener">Search Engine Roundtable: AI Mode tab removal test</a></li>
+    <li><a href="https://www.seroundtable.com/bing-web-mode-42535.html" target="_blank" rel="noopener">Search Engine Roundtable: Bing Web Mode</a></li>
+    <li><a href="https://www.seroundtable.com/chatgpt-search-result-tests-42537.html" target="_blank" rel="noopener">Search Engine Roundtable: ChatGPT search result tests</a></li>
+    <li><a href="https://www.seroundtable.com/google-ai-mode-temporary-thread-42539.html" target="_blank" rel="noopener">Search Engine Roundtable: AI Mode temporary thread</a></li>
+    <li><a href="https://www.seroundtable.com/google-ai-overviews-ai-generated-images-back-42532.html" target="_blank" rel="noopener">Search Engine Roundtable: AI Overviews images</a></li>
+    <li><a href="https://developers.google.com/search/docs/appearance/ai-features" target="_blank" rel="noopener">Google Search Central: AI features and your website</a></li>
+    <li><a href="https://developers.google.com/search/docs/appearance/snippet" target="_blank" rel="noopener">Google Search Central: snippets</a></li>
+    <li><a href="https://censusreporter.org/" target="_blank" rel="noopener">Census Reporter</a></li>
+  </ul>
+  <p>New edition every weekday at 9:05 AM ET. Monday editions cover the weekend.</p>
+</footer>
+</div>
+</body></html>

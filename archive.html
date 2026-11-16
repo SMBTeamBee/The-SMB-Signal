@@ -1,0 +1,213 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The SMB Signal &middot; All editions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column like a morning paper folded in half; navy Broadcast masthead, lead story, briefs, then the learning desk. Brand: SMB Team navy, Signal Green, Wave Blue. */
+:root{
+  --paper:#F0F5FA; --sheet:#FFFFFF; --ink:#003A59; --ink-soft:#3D6A84; --rule:#C4D6E0;
+  --sun:#2B7310; --sun-wash:#E9F7DF; --sky:#00739E;
+  --brand-navy:#003A59; --brand-green:#69CD2B; --brand-blue:#0091C9; --brand-sky:#9FD8F0;
+  --display:"Poppins",system-ui,sans-serif;
+  --body:"Poppins",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#021E2E; --sheet:#062B40; --ink:#E8F1F6; --ink-soft:#9FBBCB; --rule:#1C4660;
+  --sun:#69CD2B; --sun-wash:#10331F; --sky:#9FD8F0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#021E2E; --sheet:#062B40; --ink:#E8F1F6; --ink-soft:#9FBBCB; --rule:#1C4660;
+  --sun:#69CD2B; --sun-wash:#10331F; --sky:#9FD8F0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.6;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+a{color:var(--sky);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+.label{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:14px;background:var(--brand-navy);color:#FFFFFF;border-radius:18px;padding:22px 24px 20px}
+.mast .label{color:var(--brand-sky)}
+.mast-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.mast-brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.mast-mark{width:clamp(64px,16vw,96px);height:auto;flex:none}
+.mast-name{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mast-the{font-size:.85rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--brand-sky)}
+.mast h1{font-size:clamp(2.6rem,10vw,4.4rem);font-weight:800;letter-spacing:-.02em;line-height:.95;color:#FFFFFF}
+.mast-tag{font-size:.98rem;font-weight:500;color:var(--brand-green)}
+.mast .dek{color:#D6E6EF;font-size:.98rem}
+.mast a{color:var(--brand-sky)}
+.weather{font-family:var(--mono);font-size:.8rem;display:flex;flex-wrap:wrap;gap:6px 18px;color:#B9D2DF;border-top:1px solid rgba(255,255,255,.18);padding-top:12px}
+.weather b{color:#FFFFFF;font-weight:500}
+
+/* lead */
+.lead{display:flex;flex-direction:column;gap:14px}
+.lead h2{font-size:clamp(1.8rem,5.5vw,2.6rem);font-weight:800}
+.lead .body{display:flex;flex-direction:column;gap:12px;max-width:65ch}
+.angle{background:var(--sun-wash);border-left:4px solid var(--sun);padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.angle .label{color:var(--sun)}
+.src{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
+
+/* briefs */
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--rule);padding-bottom:6px;margin-bottom:4px}
+.section-head h2{font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.briefs{display:flex;flex-direction:column}
+.brief{display:grid;grid-template-columns:1fr;gap:6px;padding-block:16px;border-bottom:1px solid var(--rule)}
+.brief:last-child{border-bottom:0}
+.brief h3{font-size:1.2rem;font-weight:700}
+.brief .why{font-size:.95rem;color:var(--ink-soft)}
+.brief .why b{color:var(--sun);font-family:var(--mono);font-weight:500;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+
+/* learning desk */
+.desk{display:grid;grid-template-columns:1fr;gap:20px}
+.panel{background:var(--sheet);border:1px solid var(--rule);padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel h3{font-size:1.5rem;font-weight:800}
+.term{font-family:var(--mono);font-size:.85rem;color:var(--sun)}
+.panel ul,.panel ol{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px}
+.action{border:2px solid var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start}
+.check input{margin-top:.35rem;accent-color:var(--sun);width:1.05rem;height:1.05rem;flex:none}
+.watch{display:flex;flex-direction:column;gap:14px}
+.watch-item{display:flex;flex-direction:column;gap:4px}
+.watch-item h4{margin:0;font-family:var(--display);font-size:1.05rem;font-weight:700}
+.pill{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;color:var(--ink-soft);margin-right:6px}
+.pill.test{border-color:var(--sky);color:var(--sky)}
+.pill.live{border-color:var(--sun);color:var(--sun)}
+code{font-family:var(--mono);font-size:.85em;overflow-wrap:anywhere}
+
+footer{border-top:3px solid var(--ink);padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:.85rem;color:var(--ink-soft)}
+footer ul{margin:0;padding-left:1.1rem;columns:2;column-gap:24px}
+@media (max-width:560px){footer ul{columns:1}}
+@media (prefers-reduced-motion:no-preference){.lead h2{animation:rise .5s ease-out both}@keyframes rise{from{transform:translateY(6px)}to{transform:none}}}
+.archive-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.archive-list li{display:flex;flex-direction:column;gap:2px;padding-block:10px;border-bottom:1px solid var(--rule)}
+.archive-list li:last-child{border-bottom:0}
+.archive-list a{font-family:var(--mono);font-size:.82rem}
+.archive-more{font-size:.9rem}
+.archive-empty{font-size:.95rem;color:var(--ink-soft);font-style:italic}
+.archive-list span{font-size:.95rem;color:var(--ink-soft)}
+.panel blockquote{margin:0;padding:8px 14px;border-left:3px solid var(--sky);font-style:italic;color:var(--ink)}
+.listing{display:grid;grid-template-columns:minmax(7rem,auto) 1fr;gap:6px 14px;margin:0;padding:14px;border:1px dashed var(--rule);background:var(--paper);font-size:.95rem}
+.listing dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);padding-top:.2rem}
+.listing dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:480px){.listing{grid-template-columns:1fr;gap:2px}.listing dd{margin-bottom:8px}}
+.reveal-btn{align-self:flex-start;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border:2px solid var(--ink);background:var(--sheet);color:var(--ink);cursor:pointer}
+.reveal-btn:hover{background:var(--sun-wash)}
+.reveal-btn:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.answer{display:flex;flex-direction:column;gap:8px;border-left:4px solid var(--sun);padding-left:14px}
+.answer .label{color:var(--sun)}
+.quiz{display:flex;flex-direction:column;gap:18px}
+.q{display:flex;flex-direction:column;gap:8px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.q-text{font-weight:600}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;font-family:var(--body);font-size:.95rem;line-height:1.4;padding:10px 14px;border:2px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--sky)}
+.opt:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.opt:disabled{cursor:default}
+.opt.is-correct{border-color:var(--sun);background:var(--sun-wash)}
+.opt.is-wrong{border-color:var(--sky);color:var(--ink-soft)}
+.opt .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.opt.is-correct .tag{color:var(--sun)}
+.fb{font-size:.92rem;color:var(--ink-soft)}
+.fb b{color:var(--ink)}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--ink)}
+.panel pre{margin:0;overflow-x:auto;padding:12px 14px;background:var(--paper);border:1px dashed var(--rule);font-size:.95rem;line-height:1.7}
+.archive-note{background:var(--sun-wash);border-left:4px solid var(--sun);padding:10px 14px;color:var(--ink)}
+</style>
+</head><body>
+<div class="wrap">
+<header class="mast">
+  <div class="mast-top"><span class="label">Edition archive</span><span class="label">33 editions</span></div>
+  <div class="mast-brand">
+    <svg class="mast-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <circle cx="16" cy="48" r="6.5" fill="#69CD2B"/>
+      <path d="M16 31a17 17 0 0 1 17 17" stroke="#69CD2B" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M16 18a30 30 0 0 1 30 30" stroke="#0091C9" stroke-width="5.5" stroke-linecap="round"/>
+      <path d="M16 5a43 43 0 0 1 43 43" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round"/>
+    </svg>
+    <div class="mast-name">
+      <span class="mast-the">The SMB</span>
+      <h1>Signal</h1>
+      <span class="mast-tag">Hold my coffee, Google changed something again.</span>
+    </div>
+  </div>
+    <p class="dek">Every past edition, newest first. <a href="index.html">Read today's edition</a></p>
+</header>
+<section class="archive">
+  <div class="section-head"><h2>Week of Nov 16</h2><span class="label">1 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-033.html">Edition 33 &middot; Mon, Nov 16</a><span>Google&#x27;s core update hit day 7 with its first real weekend swing, but trackers and Search Console are struggling to show it</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Nov 9</h2><span class="label">5 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-032.html">Edition 32 &middot; Fri, Nov 13</a><span>Google explains how to find its traffic in GA4 and server logs, and why the numbers never match Search Console</span></li>
+    <li><a href="editions/edition-031.html">Edition 31 &middot; Thu, Nov 12</a><span>Google warns that a new CDN can set off a Googlebot crawl spike, and blocking it can push pages out of Search</span></li>
+    <li><a href="editions/edition-030.html">Edition 30 &middot; Wed, Nov 11</a><span>Google&#x27;s November 2026 core update is rolling out. Grab a baseline now, judge it later.</span></li>
+    <li><a href="editions/edition-029.html">Edition 29 &middot; Tue, Nov 10</a><span>Google tests an AI local pack with no Call, website or directions buttons</span></li>
+    <li><a href="editions/edition-028.html">Edition 28 &middot; Mon, Nov 9</a><span>Google says Gemini can now manage Business Profiles from work accounts, but its own help page still says no</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Nov 2</h2><span class="label">5 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-027.html">Edition 27 &middot; Fri, Nov 6</a><span>Google Maps puts a Message button right next to Call on business listings</span></li>
+    <li><a href="editions/edition-026.html">Edition 26 &middot; Thu, Nov 5</a><span>Google says &quot;Crawled, currently not indexed&quot; is common and often needs no fix</span></li>
+    <li><a href="editions/edition-025.html">Edition 25 &middot; Wed, Nov 4</a><span>PageSpeed scores may jump this week, even on pages nobody touched</span></li>
+    <li><a href="editions/edition-024.html">Edition 24 &middot; Tue, Nov 3</a><span>Only the homepage indexed after a hack? Google&#x27;s Mueller says look at site quality first</span></li>
+    <li><a href="editions/edition-023.html">Edition 23 &middot; Mon, Nov 2</a><span>Google, Bing, OpenAI and Anthropic back one robots.txt line for AI training, and Bing splits training from AI answers</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Oct 26</h2><span class="label">5 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-022.html">Edition 22 &middot; Fri, Oct 30</a><span>Gemini stopped tagging its links, and its iPhone app visits land in GA4 as Direct</span></li>
+    <li><a href="editions/edition-021.html">Edition 21 &middot; Thu, Oct 29</a><span>Google says 404 errors aren&#x27;t a penalty, and fixing them is optional</span></li>
+    <li><a href="editions/edition-020.html">Edition 20 &middot; Wed, Oct 28</a><span>Google is adding Facebook Messenger links to Business Profiles on its own</span></li>
+    <li><a href="editions/edition-019.html">Edition 19 &middot; Tue, Oct 27</a><span>Google says pages made for sharing, not searching, should stay out of its index</span></li>
+    <li><a href="editions/edition-018.html">Edition 18 &middot; Mon, Oct 26</a><span>Rankings swung hard on Saturday, and Google still hasn&#x27;t confirmed an update</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Oct 19</h2><span class="label">5 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-017.html">Edition 17 &middot; Fri, Oct 23</a><span>Google is testing Business Home, a new dashboard that puts a Business Profile next to YouTube and Ads</span></li>
+    <li><a href="editions/edition-016.html">Edition 16 &middot; Thu, Oct 22</a><span>A critical PHP flaw means urgent site updates. If a site has to go offline, Google says use a 503.</span></li>
+    <li><a href="editions/edition-015.html">Edition 15 &middot; Wed, Oct 21</a><span>Google appears to be testing a new way to verify a Business Profile: a photo of your government ID</span></li>
+    <li><a href="editions/edition-014.html">Edition 14 &middot; Tue, Oct 20</a><span>Google says review appeals are backed up, and it can&#x27;t say for how long</span></li>
+    <li><a href="editions/edition-013.html">Edition 13 &middot; Mon, Oct 19</a><span>Rankings got bumpy over the weekend, but Google hasn&#x27;t confirmed an update</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Oct 12</h2><span class="label">5 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-012.html">Edition 12 &middot; Fri, Oct 16</a><span>Google is adding more links to AI answers, and testing a top spot for official sites</span></li>
+    <li><a href="editions/edition-011.html">Edition 11 &middot; Thu, Oct 15</a><span>ChatGPT clicks are landing in GA4 as Direct traffic since GPT-6</span></li>
+    <li><a href="editions/edition-010.html">Edition 10 &middot; Wed, Oct 14</a><span>Google explains how it handles PDFs, and why an old PDF can outlive the fix</span></li>
+    <li><a href="editions/edition-009.html">Edition 9 &middot; Tue, Oct 13</a><span>ChatGPT is citing the sources that create information more, and the sites that summarize it less</span></li>
+    <li><a href="editions/edition-008.html">Edition 8 &middot; Mon, Oct 12</a><span>Your rank tracker may be wrong right now. Check Search Console before you report a drop.</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Oct 5</h2><span class="label">5 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-007.html">Edition 7 &middot; Fri, Oct 9</a><span>Claude&#x27;s new rules ban faking the sources that AI answers rely on</span></li>
+    <li><a href="editions/edition-006.html">Edition 6 &middot; Thu, Oct 8</a><span>The September spam update is done after two full weeks</span></li>
+    <li><a href="editions/edition-005.html">Edition 5 &middot; Wed, Oct 7</a><span>Google explains the &quot;couldn&#x27;t fetch&quot; sitemap error, and it often has nothing to do with the file</span></li>
+    <li><a href="editions/edition-004.html">Edition 4 &middot; Tue, Oct 6</a><span>The spam update looks to be in its final phase, and Google says scaled content is now a bigger problem than link spam</span></li>
+    <li><a href="editions/edition-003.html">Edition 3 &middot; Mon, Oct 5</a><span>Google now calls fake author profiles &quot;deception&quot; and puts main content at the center of page quality</span></li>
+  </ul>
+</section>
+<section class="archive">
+  <div class="section-head"><h2>Week of Sep 28</h2><span class="label">2 editions</span></div>
+  <ul class="archive-list">
+    <li><a href="editions/edition-002.html">Edition 2 &middot; Fri, Oct 2</a><span>Google starts labeling AI clicks: Gemini adds UTM tags, and AI Overviews test a tracking parameter</span></li>
+    <li><a href="editions/edition-001.html">Edition 1 &middot; Fri, Oct 2</a><span>The September spam update is still rolling, and Google just told everyone to fact-check their AI content</span></li>
+  </ul>
+</section>
+</div>
+</body></html>
